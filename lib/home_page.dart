@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_app/new_note_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,52 +12,67 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? name;
 
-  var box = Hive.box('name_box');
+  var box = Hive.box('note_box');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.amber, shape: const CircleBorder()),
+        child: const Icon(
+          Icons.add,
+          color: Colors.pink,
+        ),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const NewNotePage()));
+        },
+      ),
       appBar: AppBar(
-        title: Text("Hive App"),
+        title: const Text("Hive App"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your Text',
-                    ),
-                    onChanged: (String value) {
-                      name = value;
-                    },
-                  ),
-                ),
-                IconButton(
-                    onPressed: () {
-                      if (name != null) {
-                        box.add(name);
-                        print('$name is Added into HiveBox');
-
-                        setState(() {});
-                      }
-                    },
-                    icon: const Icon(Icons.send))
-              ],
-            ),
             Expanded(
               child: ListView.builder(
                   itemCount: box.length,
                   itemBuilder: (context, index) {
-                    var name = box.getAt(index);
+                    Map noteMap = box.getAt(index);
 
-                    return Card(
-                      child: Center(
-                        child: Text('$name'),
+                    String title = noteMap['title'];
+                    String detail = noteMap['detail'];
+
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewNotePage(
+                                      noteMap: noteMap,
+                                    )));
+                      },
+                      child: Card(
+                        color: Colors.cyanAccent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '$title',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              Text(
+                                '$detail',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   }),

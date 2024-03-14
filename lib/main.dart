@@ -4,7 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox('name_box');
+  await Hive.openBox('note_box');
 
   runApp(const MyApp());
 }
