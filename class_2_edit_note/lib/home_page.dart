@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_app/new_note_page.dart';
 
@@ -23,8 +24,8 @@ class _HomePageState extends State<HomePage> {
           color: Colors.pink,
         ),
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const NewNotePage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => NewNotePage()));
         },
       ),
       appBar: AppBar(
@@ -49,25 +50,40 @@ class _HomePageState extends State<HomePage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => NewNotePage(
-                                      savedNote: noteMap,
+                                      noteIndex: index,
                                     )));
                       },
                       child: Card(
-                        color: Colors.cyanAccent,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
                             children: [
-                              Text(
-                                '$title',
-                                style: Theme.of(context).textTheme.titleMedium,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '$title',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
+                                    Text(
+                                      '$detail',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Text(
-                                '$detail',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    box.deleteAt(index);
+                                    setState(() {});
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                  ))
                             ],
                           ),
                         ),

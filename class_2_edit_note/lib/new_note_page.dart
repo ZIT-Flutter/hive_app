@@ -3,16 +3,15 @@ import 'package:hive/hive.dart';
 import 'package:hive_app/home_page.dart';
 
 class NewNotePage extends StatefulWidget {
-  final Map? savedNote;
-
-  const NewNotePage({super.key, this.savedNote});
+  int? noteIndex;
+  NewNotePage({super.key, this.noteIndex});
 
   @override
   State<NewNotePage> createState() => _NewNotePageState();
 }
 
 class _NewNotePageState extends State<NewNotePage> {
-  Map? noteMap;
+  // Map? noteMap;
 
   var box = Hive.box('note_box');
 
@@ -21,9 +20,11 @@ class _NewNotePageState extends State<NewNotePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.savedNote != null) {
-      titleController.text = widget.savedNote!['title'];
-      detailController.text = widget.savedNote!['detail'];
+    if (widget.noteIndex != null) {
+      Map myNote = box.getAt(widget.noteIndex!);
+
+      titleController.text = myNote['title'];
+      detailController.text = myNote['detail'];
     }
 
     return Scaffold(
@@ -31,11 +32,29 @@ class _NewNotePageState extends State<NewNotePage> {
         actions: [
           IconButton(
               onPressed: () {
-                if (noteMap != null) {
-                  box.add(noteMap);
+                String title = titleController.text;
+
+                String detail = detailController.text;
+
+                if (title.isEmpty || detail.isEmpty) {
+                  //Showing alert snackbar
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Title or Details is missing')));
+                } else {
+                  Map newNote = {'title': title, 'detail': detail};
+
+                  if (widget.noteIndex != null) {
+                    box.putAt(widget.noteIndex!, newNote);
+                  } else {
+                    box.add(newNote);
+                  }
+
+                  print('New note added');
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
                 }
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const HomePage()));
               },
               icon: const Icon(Icons.save))
         ],
@@ -52,17 +71,11 @@ class _NewNotePageState extends State<NewNotePage> {
           children: [
             TextField(
               controller: titleController,
-              onChanged: (String value) {
-                noteMap?['title'] = value;
-              },
               decoration: const InputDecoration(hintText: 'Title'),
             ),
             Expanded(
               child: TextField(
                 controller: detailController,
-                onChanged: (String value) {
-                  noteMap?['detail'] = value;
-                },
                 maxLines: 15,
                 decoration: const InputDecoration(
                     hintText: 'Note', border: InputBorder.none),
