@@ -10,8 +10,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? name;
-
   var box = Hive.box('note_box');
 
   @override
@@ -51,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => NewNotePage(
-                                      noteMap: noteMap,
+                                      savedNote: noteMap,
                                     )));
                       },
                       child: Card(

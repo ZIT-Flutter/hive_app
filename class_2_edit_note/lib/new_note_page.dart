@@ -3,9 +3,9 @@ import 'package:hive/hive.dart';
 import 'package:hive_app/home_page.dart';
 
 class NewNotePage extends StatefulWidget {
-  final Map? noteMap;
+  final Map? savedNote;
 
-  const NewNotePage({super.key, this.noteMap});
+  const NewNotePage({super.key, this.savedNote});
 
   @override
   State<NewNotePage> createState() => _NewNotePageState();
@@ -17,11 +17,13 @@ class _NewNotePageState extends State<NewNotePage> {
   var box = Hive.box('note_box');
 
   TextEditingController titleController = TextEditingController();
+  TextEditingController detailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    if (noteMap != null) {
-      titleController.text = noteMap!['title'];
+    if (widget.savedNote != null) {
+      titleController.text = widget.savedNote!['title'];
+      detailController.text = widget.savedNote!['detail'];
     }
 
     return Scaffold(
@@ -57,6 +59,7 @@ class _NewNotePageState extends State<NewNotePage> {
             ),
             Expanded(
               child: TextField(
+                controller: detailController,
                 onChanged: (String value) {
                   noteMap?['detail'] = value;
                 },
