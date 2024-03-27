@@ -63,13 +63,13 @@ class _HomePageState extends State<HomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '$title',
+                                      title,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium,
                                     ),
                                     Text(
-                                      '$detail',
+                                      detail,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),

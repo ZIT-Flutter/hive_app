@@ -1,4 +1,0 @@
-#Thu Mar 21 16:30:11 BDT 2024
-base.0=D\:\\flutter_projects\\hive_app\\class_2_edit_note\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
