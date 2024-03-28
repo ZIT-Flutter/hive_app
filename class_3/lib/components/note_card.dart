@@ -11,9 +11,7 @@ class NoteCard extends StatelessWidget {
       required this.onDelete});
 
   final int index;
-
   final Map noteMap;
-
   final VoidCallback onDelete;
 
   @override
@@ -27,7 +25,7 @@ class NoteCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => NewNotePage(
+            builder: (context) => NoteEditingPage(
               noteIndex: index,
             ),
           ),

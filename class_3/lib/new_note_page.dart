@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_app/home_page.dart';
 
-class NewNotePage extends StatefulWidget {
-  int? noteIndex;
-  NewNotePage({super.key, this.noteIndex});
+class NoteEditingPage extends StatefulWidget {
+  final int? noteIndex;
+  const NoteEditingPage({super.key, this.noteIndex});
 
   @override
-  State<NewNotePage> createState() => _NewNotePageState();
+  State<NoteEditingPage> createState() => _NoteEditingPageState();
 }
 
-class _NewNotePageState extends State<NewNotePage> {
+class _NoteEditingPageState extends State<NoteEditingPage> {
   // Map? noteMap;
 
   var box = Hive.box('note_box');

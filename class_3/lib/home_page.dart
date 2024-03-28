@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_app/new_note_page.dart';
+import 'package:hive_app/components/note_not_found.dart';
 
+import 'components/floating_button.dart';
+import 'components/my_drawer.dart';
 import 'components/note_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,18 +19,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.amber, shape: const CircleBorder()),
-        child: const Icon(
-          Icons.add,
-          color: Colors.pink,
-        ),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => NewNotePage()));
-        },
-      ),
+      floatingActionButton: const MyFloatingButton(),
+      drawer: const MyDrawer(),
       appBar: AppBar(
         title: const Text("Hive App"),
       ),
@@ -37,17 +29,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             box.isEmpty
-                ? const Expanded(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.note, size: 64),
-                          Text('Note Not Found')
-                        ],
-                      ),
-                    ),
-                  )
+                ? const NoteNotFoundWidget()
                 : Expanded(
                     child: ListView.builder(
                         itemCount: box.length,
